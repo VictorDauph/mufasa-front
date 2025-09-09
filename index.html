@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mouffassa Voice Bot</title>
+    <!-- Tone.js pour le pitch-shift -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.39/Tone.min.js"></script>
+</head>
+
+<body>
+    <h1>Mouffassa parle</h1>
+
+    <!-- champ de texte -->
+    <textarea id="textInput" rows="4" cols="50" placeholder="Écris ce que Mouffassa doit dire..."></textarea>
+    <br><br>
+
+    <input type="text" id="refInput" size="50" placeholder="URL de la voix de référence" />
+    <br><br>
+
+    <!-- bouton -->
+    <button id="sendBtn">Envoyer au backend</button>
+    <br><br>
+
+    <!-- audio player -->
+    <button id="replayBtn">Relancer l'audio</button>
+    <br><br>
+
+    <label for="speed">Vitesse :</label>
+    <input type="range" id="speed" min="0.5" max="1.5" step="0.05" value="0.90">
+    <span id="speedVal">0.90</span>
+
+    <br>
+
+
+    <!-- inclusion du script JS -->
+    <script src="./js/index.js"></script>
+</body>
+
+</html>
