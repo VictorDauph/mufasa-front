@@ -1,20 +1,18 @@
-let API_URL = ""; // backend FastAPI
+import { loadConfig } from "./config/config.js";
 
-async function loadConfig() {
-    const resp = await fetch("./config/config.json");
-    const cfg = await resp.json();
-    API_URL = cfg.api_url;
+let API_URL = ""; // backend FastAPI
+loadConfig().then((url) => {
+    API_URL = url
     console.log("API URL chargée:", API_URL);
-}
+});
 
 const btn = document.getElementById("sendBtn");
 const textInput = document.getElementById("textInput");
-const refInput = document.getElementById("refInput");
 const replayBtn = document.getElementById("replayBtn");
 const speed = document.getElementById("speed");
 const speedVal = document.getElementById("speedVal");
 
-loadConfig();
+
 
 // Déclaration des variables globales
 let playbackRate = null;
@@ -56,7 +54,7 @@ btn.addEventListener("click", async () => {
         const resp = await fetch(`${API_URL}/speak`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ text: textInput.value, ref_url: refInput.value })
+            body: JSON.stringify({ text: textInput.value, ref_url: await localStorage.getItem('ref_url') })
         });
         const data = await resp.json();
 
