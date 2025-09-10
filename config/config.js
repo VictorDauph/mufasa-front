@@ -1,5 +1,17 @@
 export async function loadConfig() {
-    const resp = await fetch("/config/config.json");
+    let configPath;
+    // Si on est à la racine (index.html)
+    if (
+        window.location.pathname === "/mufasa-front/" ||
+        window.location.pathname.endsWith("/index.html")
+    ) {
+        configPath = "./config/config.json";
+    } else {
+        // Pour les pages dans des sous-dossiers
+        configPath = "../../config/config.json";
+    }
+
+    const resp = await fetch(configPath);
     const cfg = await resp.json();
 
     // Détection de l'environnement
