@@ -1,4 +1,4 @@
-import { loadConfig } from "../../config/config.js";
+import { loadConfig } from "./config/config.js";
 
 let API_URL = ""; // backend FastAPI
 loadConfig().then((url) => {
