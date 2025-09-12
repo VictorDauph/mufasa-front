@@ -1,4 +1,4 @@
-import { loadConfig } from "./config/config.js";
+import { loadConfig } from "../../config/config.js";
 
 let API_URL = ""; // backend FastAPI
 loadConfig().then((url) => {
@@ -6,17 +6,13 @@ loadConfig().then((url) => {
     console.log("API URL chargée:", API_URL);
 });
 
-const btn = document.getElementById("sendBtn");
-const textInput = document.getElementById("textInput");
+
+const pushToTalkBtn = document.getElementById("pushToTalkBtn");
 const replayBtn = document.getElementById("replayBtn");
 const speed = document.getElementById("speed");
 const speedVal = document.getElementById("speedVal");
 
-
-
-// Déclaration des variables globales
-let playbackRate = null;
-let player = null;  // Remplace audioSource
+let player = null;
 let isInitialized = false;
 
 async function initTone() {
@@ -41,35 +37,81 @@ async function initTone() {
     return true;
 }
 
-// Modifie le click handler pour utiliser Tone.Player
-btn.addEventListener("click", async () => {
-    if (!await initTone()) {
-        alert("Erreur d'initialisation audio");
-        return;
+
+let mediaRecorder;
+let audioChunks = [];
+
+// 🎙️ Démarrer l’enregistrement
+async function startRecording() {
+    if (mediaRecorder && mediaRecorder.state === "recording") {
+        return; // déjà en cours, ne redémarre pas
     }
-
-    // ...existing code...
-
-    try {
-        const resp = await fetch(`${API_URL}/speak`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ text: textInput.value, ref_url: await localStorage.getItem('ref_url') })
-        });
-        const data = await resp.json();
-
-        if (data.audio_url) {
-            await player.load(data.audio_url);  // Charge l'audio
-            player.start();  // Lance la lecture
-        } else {
-            alert("Pas d'URL audio dans la réponse !");
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
+    audioChunks = [];
+    mediaRecorder.ondataavailable = e => {
+        if (e.data.size > 0) audioChunks.push(e.data);
+    };
+    mediaRecorder.onstop = async () => {
+        if (!await initTone()) {
+            alert("Erreur d'initialisation audio");
+            return;
         }
-    } catch (err) {
-        console.error("❌ API error:", err);
-        alert("Erreur lors de l'appel API");
+        const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+        const formData = new FormData();
+        formData.append("ref_url", await localStorage.getItem('ref_url'));
+        formData.append("audio", audioBlob, "recording.webm");
+        try {
+            const resp = await fetch(API_URL + "/voice_changer", {
+                method: "POST",
+                body: formData
+            });
+
+            if (!resp.ok) {
+                // Si le backend renvoie une HTTPException
+                const errorData = await resp.json();
+                console.error("❌ Backend error:", errorData);
+                alert("Erreur backend: " + (errorData.detail || "Erreur inconnue"));
+                return;
+            }
+
+            const data = await resp.json();
+
+            if (data.audio_url) {
+                await player.load(data.audio_url);  // Charge l'audio
+                player.start();  // Lance la lecture
+            } else {
+                alert("Pas d'URL audio dans la réponse !");
+            }
+        } catch (err) {
+            console.log("❌ Error:", err);
+            alert("Erreur lors de l’envoi au backend :", err);
+        }
+    };
+    mediaRecorder.start();
+}
+
+function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state === "recording") {
+        mediaRecorder.stop();
+
     }
+}
+
+pushToTalkBtn.addEventListener("mousedown", startRecording);
+pushToTalkBtn.addEventListener("mouseup", stopRecording);
+
+// Espace clavier
+document.addEventListener("keydown", (e) => {
+    e.preventDefault();
+    if (e.code === "Space") startRecording();
+});
+document.addEventListener("keyup", (e) => {
+    e.preventDefault();
+    if (e.code === "Space") stopRecording();
 });
 
+//bouton relancer l'audio
 // Modifie aussi le bouton replay
 replayBtn.addEventListener("click", async () => {
     if (!isInitialized) {
@@ -79,8 +121,7 @@ replayBtn.addEventListener("click", async () => {
         player.start();
     }
 });
-
-// Sliders
+//controle de la vitesse
 speed.addEventListener("input", () => {
     const val = parseFloat(speed.value);
     if (player) {
