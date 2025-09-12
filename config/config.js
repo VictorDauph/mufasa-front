@@ -5,7 +5,7 @@ export async function loadConfig() {
         window.location.pathname === "/mufasa-front/" ||
         window.location.pathname.endsWith("/index.html")
     ) {
-        configPath = "./config/config.json";
+        configPath = "/config/config.json";
     } else {
         // Pour les pages dans des sous-dossiers
         configPath = "../../config/config.json";
