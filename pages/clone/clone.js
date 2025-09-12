@@ -10,8 +10,12 @@ document.getElementById('audioForm').addEventListener('submit', async function (
     e.preventDefault();
 
     const input = document.getElementById('audioInput');
-    const file = input.files[0];
-    if (!file) return;
+    let file = input.files[0];
+    if (!file) {
+        const resp = await fetch("../../medias/default.mp3")
+        const blob = await resp.blob();
+        file = new File([blob], "default.mp3", { type: "audio/mpeg" });
+    }
 
     const formData = new FormData();
     formData.append('file', file);
@@ -33,4 +37,8 @@ document.getElementById('audioForm').addEventListener('submit', async function (
     } catch (error) {
         alert('Erreur réseau : ' + error.message);
     }
+});
+
+document.getElementById('btn-supprimer').addEventListener('click', async function () {
+    let ref_url = await localStorage.removeItem('ref_url');
 });
