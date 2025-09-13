@@ -1,0 +1,147 @@
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #f9fafb;
+    color: #111827;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 2rem;
+    gap: 1.5rem;
+}
+
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+a {
+    text-decoration: none;
+    color: #2563eb;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: #1e40af;
+}
+
+button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+button:hover {
+    background: #1e40af;
+    transform: scale(1.03);
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+/* --- Desktop controls --- */
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    max-width: 400px;
+    width: 100%;
+}
+
+.speed-control {
+    width: 100%;
+    text-align: center;
+}
+
+input[type="range"] {
+    width: 100%;
+    accent-color: #2563eb;
+}
+
+#speedVal {
+    font-weight: 600;
+    color: #2563eb;
+}
+
+/* --- Mobile version --- */
+.mobile-controls {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-grow: 1;
+    width: 100%;
+    position: relative;
+    padding-bottom: 6rem;
+    /* espace pour le slider en bas */
+}
+
+.mobile-controls button {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    font-size: 2rem;
+    background: #ef4444;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.5);
+    transition: transform 0.1s;
+}
+
+.mobile-controls button:active {
+    transform: scale(0.9);
+    background: #dc2626;
+}
+
+.mobile-speed-control {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mobile-speed-control label {
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+}
+
+.mobile-speed-control input[type="range"] {
+    width: 90%;
+    accent-color: #2563eb;
+}
+
+.mobile-speed-control span {
+    font-weight: 600;
+    color: #2563eb;
+    margin-top: 0.3rem;
+}
+
+/* --- Responsive rules --- */
+@media (max-width: 768px) {
+    .desktop-controls {
+        display: none;
+    }
+
+    .mobile-controls {
+        display: flex;
+    }
+}
