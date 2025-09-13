@@ -6,23 +6,38 @@
     <title>Recorder Demo</title>
     <!-- Tone.js pour le pitch-shift -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.39/Tone.min.js"></script>
+    <link rel="stylesheet" href="./index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
     <a href="./pages/clone/clone.html">Aller cloner une voix</a>
-    <br><br>
+
     <h1>🎤 Enregistre ta voix</h1>
 
-    <button id="pushToTalkBtn">🎤 Push to Talk</button>
+    <div class="controls desktop-controls">
+        <button id="pushToTalkBtn">🎤 Push to Talk</button>
 
-    <!-- audio player -->
-    <button id="replayBtn">Relancer l'audio</button>
-    <br><br>
+        <!-- audio player -->
+        <button id="replayBtn">Relancer l'audio</button>
 
-    <label for="speed">Vitesse :</label>
-    <input type="range" id="speed" min="0.5" max="1.5" step="0.05" value="0.90">
-    <span id="speedVal">0.90</span>
+        <div class="speed-control">
+            <label for="speed">Vitesse :</label>
+            <input type="range" id="speed" min="0.5" max="1.5" step="0.05" value="0.90">
+            <span id="speedVal">0.90</span>
+        </div>
+    </div>
 
+    <!-- Version mobile -->
+    <div class="mobile-controls">
+        <button id="mobilePushToTalkBtn">🎤</button>
+        <p>Maintiens pour parler</p>
+        <div class="mobile-speed-control">
+            <label for="mobileSpeed">Vitesse :</label>
+            <input type="range" id="mobileSpeed" min="0.5" max="1.5" step="0.05" value="0.90">
+            <span id="mobileSpeedVal">0.90</span>
+        </div>
+    </div>
     <script type="module" src="./index.js"></script>
 </body>
 

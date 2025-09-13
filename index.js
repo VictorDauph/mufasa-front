@@ -11,6 +11,7 @@ const pushToTalkBtn = document.getElementById("pushToTalkBtn");
 const replayBtn = document.getElementById("replayBtn");
 const speed = document.getElementById("speed");
 const speedVal = document.getElementById("speedVal");
+const mobilePushToTalkBtn = document.getElementById("mobilePushToTalkBtn");
 
 let player = null;
 let isInitialized = false;
@@ -128,6 +129,16 @@ speed.addEventListener("input", () => {
         player.playbackRate = val;  // CORRECT : pas de .value
         speedVal.textContent = val.toFixed(2);
     }
+});
+
+// Mobile : Push to Talk
+mobileBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    startRecording();
+});
+mobileBtn.addEventListener("touchend", (e) => {
+    e.preventDefault();
+    stopRecording();
 });
 
 function cleanup() {
