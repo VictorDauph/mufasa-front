@@ -101,6 +101,12 @@ input[type="range"] {
     transition: transform 0.1s;
 }
 
+#replayBtnmob {
+    background: #2563eb;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.5);
+    border-radius: ;
+}
+
 .mobile-controls button:active {
     transform: scale(0.9);
     background: #dc2626;

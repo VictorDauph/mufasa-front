@@ -9,9 +9,12 @@ loadConfig().then((url) => {
 
 const pushToTalkBtn = document.getElementById("pushToTalkBtn");
 const replayBtn = document.getElementById("replayBtn");
+const replayBtnmob = document.getElementById("replayBtnmob");
 const speed = document.getElementById("speed");
 const speedVal = document.getElementById("speedVal");
 const mobilePushToTalkBtn = document.getElementById("mobilePushToTalkBtn");
+const mobileSpeed = document.getElementById("mobileSpeed");
+const mobileSpeedVal = document.getElementById("mobileSpeedVal");
 
 let player = null;
 let isInitialized = false;
@@ -122,6 +125,16 @@ replayBtn.addEventListener("click", async () => {
         player.start();
     }
 });
+
+replayBtnmob.addEventListener("touchstart", async () => {
+    if (!isInitialized) {
+        await initTone();
+    }
+    if (player && player.loaded) {
+        player.start();
+    }
+});
+
 //controle de la vitesse
 speed.addEventListener("input", () => {
     const val = parseFloat(speed.value);
@@ -131,12 +144,21 @@ speed.addEventListener("input", () => {
     }
 });
 
+//controle de la vitesse mobile
+mobileSpeed.addEventListener("input", () => {
+    const val = parseFloat(mobileSpeed.value);
+    if (player) {
+        player.playbackRate = val;
+        mobileSpeedVal.textContent = val.toFixed(2);
+    }
+});
+
 // Mobile : Push to Talk
-mobileBtn.addEventListener("touchstart", (e) => {
+mobilePushToTalkBtn.addEventListener("touchstart", (e) => {
     e.preventDefault();
     startRecording();
 });
-mobileBtn.addEventListener("touchend", (e) => {
+mobilePushToTalkBtn.addEventListener("touchend", (e) => {
     e.preventDefault();
     stopRecording();
 });
