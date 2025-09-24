@@ -2,12 +2,15 @@ import { loadConfig } from "./config/config.js";
 
 let API_URL = ""; // backend FastAPI
 
+const status = document.getElementById("status");
+
 loadConfig().then(async (url) => {
     API_URL = url
     console.log("API URL chargée:", API_URL);
     const resp = await fetch(API_URL + "/test");
     const result = await resp.text();
     console.log("Backend response:", JSON.parse(result).message);
+    status.textContent = "Backend status: " + JSON.parse(result).message;
 });
 
 
