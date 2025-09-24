@@ -1,4 +1,4 @@
-import { loadConfig } from "./config/config.js";
+import { loadConfig } from "../../config/config.js";
 
 let API_URL = ""; // backend FastAPI
 
@@ -7,7 +7,7 @@ loadConfig().then(async (url) => {
     console.log("API URL chargée:", API_URL);
     const resp = await fetch(API_URL + "/test");
     const result = await resp.text();
-    console.log("Backend response:", JSON.parse(result).message);
+    console.log("Backend response:", result.message);
 });
 
 
@@ -68,10 +68,9 @@ async function startRecording() {
         const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
         const formData = new FormData();
         formData.append("ref_url", await localStorage.getItem('ref_url'));
-        formData.append("context", localStorage.getItem('context'));
         formData.append("audio", audioBlob, "recording.webm");
         try {
-            const resp = await fetch(API_URL + "/ask", {
+            const resp = await fetch(API_URL + "/voice_changer", {
                 method: "POST",
                 body: formData
             });
@@ -85,8 +84,6 @@ async function startRecording() {
             }
 
             const data = await resp.json();
-            console.log(data);
-            localStorage.setItem('context', JSON.stringify(data.context));
 
             if (data.audio_url) {
                 await player.load(data.audio_url);  // Charge l'audio
