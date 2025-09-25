@@ -1,0 +1,34 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+textarea {
+    flex: 1;
+    /* prend tout l'espace dispo */
+    width: 80%;
+}
+
+@media (max-width: 768px) {
+    textarea {
+        flex: 1;
+        /* prend tout l'espace dispo */
+        width: 100%;
+        /* largeur complète */
+        box-sizing: border-box;
+        resize: none;
+        /* empêche le redimensionnement manuel */
+        font-size: 1rem;
+        padding: 10px;
+        border: none;
+        outline: none;
+    }
+}
