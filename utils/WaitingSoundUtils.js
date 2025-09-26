@@ -2,25 +2,10 @@ let processingPlayer = null; // Tone.Player
 let processingOsc = null;    // Tone.Oscillator (fallback synth within Tone)
 let processingGain = null;   // Tone.Gain used for unified volume + fade
 let _isStarting = false;
-let _soundUrl = "../medias/waiting-sound.mp3";
+let _soundUrl = "./medias/waiting-sound.mp3";
 let _volumeDb = 10; // default volume in dB (negative = attenuation)
 let _loop = true;
 
-function dbToLinear(db) {
-    return Math.pow(10, db / 20);
-}
-
-export function setProcessingSoundUrl(url) {
-    _soundUrl = url;
-}
-
-export function setProcessingSoundVolumeDb(db) {
-    _volumeDb = Number(db);
-}
-
-export function setProcessingSoundLoop(loop) {
-    _loop = !!loop;
-}
 
 /**
  * Démarre le son de "processing" en n'utilisant que Tone.js.
