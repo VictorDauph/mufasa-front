@@ -1,4 +1,5 @@
 import { loadConfig } from "./config/config.js";
+import { startWaitingSound, stopWaitingSound } from "./utils/WaitingSoundUtils.js";
 
 let API_URL = ""; // backend FastAPI
 
@@ -54,6 +55,7 @@ let audioChunks = [];
 
 // 🎙️ Démarrer l’enregistrement
 async function startRecording() {
+
     if (mediaRecorder && mediaRecorder.state === "recording") {
         return; // déjà en cours, ne redémarre pas
     }
@@ -74,6 +76,7 @@ async function startRecording() {
         formData.append("context", localStorage.getItem('context'));
         formData.append("audio", audioBlob, "recording.webm");
         try {
+            startWaitingSound(); // Démarre le son de traitement
             const resp = await fetch(API_URL + "/ask", {
                 method: "POST",
                 body: formData
@@ -100,6 +103,8 @@ async function startRecording() {
         } catch (err) {
             console.log("❌ Error:", err);
             alert("Erreur lors de l’envoi au backend :", err);
+        } finally {
+            stopWaitingSound(); // Arrête le son de traitement
         }
     };
     mediaRecorder.start();
