@@ -7,6 +7,11 @@ let _volumeDb = 10; // default volume in dB (negative = attenuation)
 let _loop = true;
 
 
+function dbToLinear(db) {
+    return Math.pow(10, db / 20);
+}
+
+
 /**
  * Démarre le son de "processing" en n'utilisant que Tone.js.
  * - url optionnel pour override
